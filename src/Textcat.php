@@ -19,13 +19,13 @@ class Textcat
     {
         // get textcat for the current language
         if (is_file(PATH_TEXTCATS.$this->sLang.'.json')) {
-            $aTextcat[$this->sLang] = json_decode(file_get_contents(PATH_TEXTCATS.$this->sLang.'.json'));
+            $aTextcat[$this->sLang] = json_decode(file_get_contents(PATH_TEXTCATS.$this->sLang.'.json'), true);
         }
 
         // if the current language is not the default language, get the defauld language aswell
         if ($this->sLang != $this->sDefaultlang) {
             if (is_file(PATH_TEXTCATS.$this->sDefaultlang.'.json')) {
-                $aTextcat[$this->sDefaultlang] = json_decode(file_get_contents(PATH_TEXTCATS.$this->sDefaultlang.'.json'));
+                $aTextcat[$this->sDefaultlang] = json_decode(file_get_contents(PATH_TEXTCATS.$this->sDefaultlang.'.json'), true);
             }
         }
 
@@ -46,10 +46,10 @@ class Textcat
         if (isset($_GET["showtextkeys"])) {
             $return = '['.$sTextkey.']';
         } else {
-            if (!empty($this->T[$this->sLang][$sTextkey]["tcl_text"]) && \trim($this->T[$this->sLang][$sTextkey]["tcl_text"]) != '') {
-                $return = \trim($this->T[$this->sLang][$sTextkey]["tcl_text"]);
-            } elseif (!empty($this->T[$this->sDefaultlang][$sTextkey]["tcl_text"]) && \trim($this->T[$this->sDefaultlang][$sTextkey]["tcl_text"]) != '') {
-                $return = \trim($this->T[$this->sDefaultlang][$sTextkey]["tcl_text"]);
+            if (!empty($this->T[$this->sLang][$sTextkey]) && \trim($this->T[$this->sLang][$sTextkey]) != '') {
+                $return = \trim($this->T[$this->sLang][$sTextkey]);
+            } elseif (!empty($this->T[$this->sDefaultlang][$sTextkey]) && \trim($this->T[$this->sDefaultlang][$sTextkey]) != '') {
+                $return = \trim($this->T[$this->sDefaultlang][$sTextkey]);
             }
             if (!isset($return) || $return == '') {
                 if ($this->logdir != '' && is_dir($this->logdir) && is_writable($this->logdir)) {
