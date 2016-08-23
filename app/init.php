@@ -106,7 +106,8 @@ $container['twig'] = function ($c) {
 date_default_timezone_set($container['conf']["defaulttimezone"]);
 
 $container['lang'] = \HaaseIT\HCSFNG\Frontend\Helper::getLanguage($container);
-$container['defaultlang'] = key($container['conf']["lang_available"]);
+$langavailable = $container['conf']["lang_available"];
+$container['defaultlang'] = key($langavailable);
 
 $container['textcats'] = function ($c)
 {
