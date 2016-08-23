@@ -48,11 +48,11 @@ $container['request'] = Zend\Diactoros\ServerRequestFactory::fromGlobals();
 
 // cleanup request
 $requesturi = urldecode($container['request']->getRequestTarget());
-$parsedrequesturi = \substr($requesturi, \strlen(\dirname($_SERVER['PHP_SELF'])));
-if (substr($parsedrequesturi, 1, 1) != '/') {
-    $parsedrequesturi = '/'.$parsedrequesturi;
+$container['requesturi'] = \substr($requesturi, \strlen(\dirname($_SERVER['PHP_SELF'])));
+if (substr($container['requesturi'], 1, 1) != '/') {
+    $container['requesturi'] = '/'.$container['requesturi'];
 }
-$container['request'] = $container['request']->withRequestTarget($parsedrequesturi);
+$container['request'] = $container['request']->withRequestTarget($container['requesturi']);
 
 use Symfony\Component\Yaml\Yaml;
 $container['conf'] = function ($c) {
@@ -115,3 +115,10 @@ $container['textcats'] = function ($c)
 
     return $textcats;
 };
+
+// ----------------------------------------------------------------------------
+// Begin routing
+// ----------------------------------------------------------------------------
+
+$router = new \HaaseIT\HCSFNG\Frontend\Router($container);
+$P = $router->getPage();
