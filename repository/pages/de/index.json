@@ -1,3 +1,10 @@
 {
-  "content": "Das\nist\nmultiline!DE"
+  "content": "Index page",
+  "type": "content",
+  "config": {
+    "parsecontent": false
+  },
+  "title": "Index Title",
+  "keywords": "Index, Keywords",
+  "description": "Index Description"
 }
