@@ -27,8 +27,12 @@ class Router
             $jsonfilename = substr($this->sPath, 0, -4).'json';
             if (is_file(PATH_PAGES.$this->container['lang'].$jsonfilename)) {
                 $payload = json_decode(file_get_contents(PATH_PAGES.$this->container['lang'].$jsonfilename), true);
-            } else {
-                // todo: try loading default lang page or 404
+            } elseif ($this->container['lang'] != $this->container['defaultlang']) {
+                if (is_file(PATH_PAGES.$this->container['defaultlang'].$jsonfilename)) {
+                    $payload = json_decode(file_get_contents(PATH_PAGES.$this->container['defaultlang'].$jsonfilename), true);
+                    // todo: add textcat for following message
+                    $payload['content'] = 'Not Found in '.$this->container['lang'].', displaying in '.$this->container['defaultlang'].'.<br>'.$payload['content'];
+                }
             }
 
         }
