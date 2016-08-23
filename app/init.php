@@ -18,12 +18,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+error_reporting(E_ALL);
 ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+require_once __DIR__.'/config/constants.php';
+ini_set('error_log', PATH_LOGS.'php_error.log');
 ini_set('xdebug.overload_var_dump', 0);
 ini_set('xdebug.var_display_max_depth', 10);
 ini_set('html_errors', 0);
-error_reporting(E_ALL);
-//error_reporting(0);
 
 mb_internal_encoding('UTF-8');
 header("Content-Type: text/html; charset=UTF-8");
@@ -36,13 +38,13 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 $container = new Pimple\Container();
 
-$AuraLoader = new \Aura\Autoload\Loader;
+$AuraLoader = new Aura\Autoload\Loader;
 $AuraLoader->register();
 $AuraLoader->addPrefix('\HaaseIT\HCSFNG\Frontend', __DIR__.'/../src');
 
 // PSR-7 Stuff
 // Init request object
-$container['request'] = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
+$container['request'] = Zend\Diactoros\ServerRequestFactory::fromGlobals();
 
 // cleanup request
 $requesturi = urldecode($container['request']->getRequestTarget());
@@ -71,15 +73,12 @@ $container['conf'] = function ($c) {
     return $conf;
 };
 
-require_once __DIR__.'/config/constants.php';
-
 // ----------------------------------------------------------------------------
 // Begin Twig loading and init
 // ----------------------------------------------------------------------------
 
 $container['twig'] = function ($c) {
-    // todo: dynamic environment
-    $loader = new Twig_Loader_Filesystem([__DIR__ . '/../repository/']);
+    $loader = new Twig_Loader_Filesystem([__DIR__ . '/../repository/templates/']);
     $twig_options = [
         'autoescape' => false,
         'debug' => (isset($c['conf']["debug"]) && $c['conf']["debug"] ? true : false)
@@ -99,9 +98,20 @@ $container['twig'] = function ($c) {
     if (isset($c['conf']["debug"]) && $c['conf']["debug"]) {
         //$twig->addExtension(new Twig_Extension_Debug());
     }
-    //$twig->addFunction('T', new Twig_Function_Function('$c[\'textcats\']->T'));
-    //$twig->addFunction(new Twig_SimpleFunction('T', [$c['textcats'], 'T']));
+    $twig->addFunction(new Twig_SimpleFunction('T', [$c['textcats'], 'T']));
 
     return $twig;
 };
 
+date_default_timezone_set($container['conf']["defaulttimezone"]);
+
+$container['lang'] = \HaaseIT\HCSFNG\Frontend\Helper::getLanguage($container);
+
+$container['textcats'] = function ($c)
+{
+    $langavailable = $c['conf']["lang_available"];
+    $textcats = new \HaaseIT\HCSFNG\Frontend\Textcat($c, key($langavailable), $c['conf']['textcatsverbose'], PATH_LOGS);
+    $textcats->loadTextcats();
+
+    return $textcats;
+};
