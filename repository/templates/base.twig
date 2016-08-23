@@ -1,1 +1,593 @@
-{{ content }}
+{% if type == 'contentnosubnav' or maintenancemode %}{%
+set widecontent = true %}{%
+else %}{%
+set widecontent = false %}{%
+endif %}{%
+import "macros.twig" as macro %}<!DOCTYPE html>
+<html lang="{{language}}">
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="Marcus Haase">
+    {% if item.data.itm_data.title is defined and item.data.itm_data.title != '' %}
+        <title>{{item.data.itm_data.title}}</title>
+    {% else %}
+        <title>{{title}}</title>
+    {% endif %}
+    <meta name="revisit-after" content="5 days">
+    <meta name="Robots" content="INDEX,FOLLOW">
+    {% if keywords is defined %}
+        <meta name="Keywords" content="{{keywords}}">
+    {% elseif item.data.itm_data.keywords is defined and item.data.itm_data.keywords != '' %}
+        <meta name="Keywords" content="{{item.data.itm_data.keywords}}">
+    {% endif %}
+    {% if description is defined and description != '' %}
+        <meta name="Description" content="{{description}}">
+    {% elseif item.data.itm_data.description is defined and item.data.itm_data.description != '' %}
+        <meta name="Description" content="{{item.data.itm_data.description}}">
+    {% endif %}
+    <link href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8AGx0d5hsdHcAbHR0fAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbHR2HGx0d9hsdHVcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbHR08AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABsdHTwbHR3vGx0dhwAAAAAAAAAAAAAAAAAAAAAAAAAAGx0d5hsdHTwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGx0dHxsdHfYbHR2HAAAAAAAAAAAAAAAAAAAAABsdHdsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbHR0fGx0d9hsdHVcAAAAAAAAAAAAAAAAbHR3bGx0dPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABsdHYcbHR3+Gx0dHwAAAAAAAAAAGx0dnBsdHcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbHR3AGx0d9hsdHf8bHR3vGx0d7xsdHc4bHR37Gx0drwAAAAAAAAAAAAAAABsdHR8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbHR3vGx0dcAAAAAAAAAAAGx0drxsdHcAAAAAAAAAAAAAAAAAbHR3mAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGx0dcBsdHdsAAAAAAAAAAAAAAAAbHR32Gx0dVwAAAAAAAAAAGx0d2xsdHdsbHR0fAAAAAAAAAAAAAAAAAAAAAAAAAAAbHR3mAAAAAAAAAAAAAAAAGx0dVxsdHfYAAAAAAAAAAAAAAAAbHR3AGx0d9hsdHXAAAAAAAAAAAAAAAAAAAAAAGx0d2wAAAAAAAAAAAAAAAAAAAAAbHR3AGx0dzgAAAAAAAAAAAAAAABsdHTwbHR3bGx0d7xsdHa8bHR1wGx0d5hsdHZwAAAAAAAAAAAAAAAAAAAAAGx0dHxsdHf4bHR2cAAAAAAAAAAAAAAAAAAAAABsdHR8bHR1wGx0dcBsdHTwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbHR1XGx0d+wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABsdHTz///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A//8AAB//AACP3wAAx88AAOPfAADxzwAA+M8AAPgHAAB+ZwAAfnMAAB9zAACPeQAAwHgAAPD8AAD//gAA//8AAA==" rel="icon" type="image/x-icon">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/pure-min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.6.0/grids-responsive-min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <style type="text/css">
+        /* General purpose begin */
+        html,body{height:100%;margin-bottom:1px}
+        label{font-weight: bold;}
+        hr{border:#eee 1px solid;margin:1.5em 0;}
+        h1, h2, h3, h4{font-weight: normal;margin-top:0;}
+        a{text-decoration: none;color: inherit;}
+        a:hover{text-decoration: underline;}
+        body{background: #000;}
+
+        /* Tooltips */
+        [tooltip] {
+            white-space:pre-wrap;
+        }
+
+        [tooltip]:before {
+            /* needed - do not touch */
+            content: attr(tooltip);
+            position: absolute;
+            opacity: 0;
+
+            /* customizable */
+            transition: all 0.15s ease;
+            padding: 10px;
+            color: #fff;
+            border-radius: 1px;
+            border: 1px solid black;
+            box-shadow: 2px 2px 1px silver;
+        }
+
+        [tooltip]:hover:before {
+            /* needed - do not touch */
+            opacity: 1;
+
+            /* customizable */
+            background: #333;
+            margin-top: 10px;
+            margin-left: 20px;
+            z-index: 999;
+        }
+
+        [tooltip]:not([tooltip-persistent]):before {
+            pointer-events: none;
+        }
+
+
+
+        .fs{font-size: 0.85em;} /* Set font size */
+        .list-unstyled{
+            list-style: outside none none;
+            padding-left: 0;
+        }
+        .text-center{text-align: center;}
+        .well {
+            background-image: linear-gradient(to bottom, #e8e8e8 0%, #f5f5f5 100%);
+            background-repeat: repeat-x;
+            border-color: #dcdcdc;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) inset, 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 1em;
+        }
+        .pull-right {float: right !important;}
+        .divider10 {
+            border-bottom: 1px solid #888;
+            clear: both;
+            height: 1px;
+            margin: 0 0 7px;
+            padding: 7px 0 0;
+            width: 100%;
+        }
+        .divider {height: 1em;}
+        .pointer{cursor: pointer;}
+        .block{display: block}
+        .clear{clear: both;}
+        .listtable {width:100%}
+        .listtable-head{text-align:left;font-weight:700;padding:1px 3px}
+        .listtable-data{text-align:left;padding:1px 3px}
+        .listtable tr:nth-child(even){background-color:#eaeaea;}
+        .listtable tr:nth-child(odd){background-color:#fff;}
+        .listtable tr:hover{background-color:#bbb;}
+        .listtable-marked{background-color:#b0ffb0 !important;}
+        .listtable tr.listtable-marked:hover{background-color:#10ff10 !important;}
+        .listtable thead tr{background: #bfbfbf !important;}
+        .errortext{}
+        .formerror, #customerform-errortext{background-color: #ffd3d3;}
+        pre.debug{background: #fff; border:2px solid red;padding:1em;}
+
+        .formfieldwithpaddingright{width: calc(100% - 0.5em)}
+        .formfieldwithoutpadding{width: 100%}
+
+        .modal{width: 24em !important; margin-left:-12em !important;}
+
+        .hidden-sm{display: none;}
+        .only-sm{display: inline;}
+
+        #search{color: black;}
+
+        .pure-button{
+            border-radius: 0;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+        .button-orange, .button-orange:focus, .button-orange:hover {
+            color: white;
+            background-image: linear-gradient(to bottom, #f0ad4e 0%, #eb9316 100%);
+            background-repeat: repeat-x;
+            border-color: #e38d13;
+            background-color: #e38d13;
+        }
+        .button-green, .button-green:focus, .button-green:hover {
+            color: white;
+            background-image: linear-gradient(to bottom, #5cb85c 0%, #419641 100%);
+            background-repeat: repeat-x;
+            border-color: #5cb85c;
+            background-color: #5cb85c;
+        }
+
+        .accordion {
+        }
+        .accordion dt {
+            background-image: linear-gradient(to bottom, #f5f5f5 0%, #e8e8e8 100%);
+            background-repeat: repeat-x;
+            background-color: #ddd;
+        }
+        .accordion dt, .accordion dd {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-bottom: 0;
+        }
+        .accordion dt:last-of-type, .accordion dd:last-of-type {
+            border-bottom: 1px solid #ddd;
+        }
+        .accordion dt a, .accordion dd a {
+            display: block;
+            color: black;
+        }
+        .accordion dd {
+            border-top: 1px solid #ddd;
+            margin: 0;
+        }
+        .accordion dd:last-of-type {
+            position: relative;
+            top: -1px;
+        }
+        /* General purpose end */
+
+        /* Helpers begin */
+        .red{background: red;}
+        .green{background: green;}
+        .blue{background: blue;}
+        /* Helpers end */
+
+        /* Page structure begin */
+        .container {margin: 0 auto;width: 100%;}
+
+        #row-topbar{background: #000; color: #fff;}
+        #row-topnav{display: none;}
+        #row-main{background: #fff;}
+        #row-footer{background: #333; color: #fff;}
+
+        #col-leftnav{display: none;}
+        #col-main{padding: 0.5em 0 0.5em 0;}
+        /* Page structure end */
+
+        #cookienoticecont{background: white;}
+        #cookienotice{text-align: center;}
+
+        .button-head{margin-bottom: 0.25em;}
+        #button-login, #button-register{margin-top: 0.1em;}
+        .button-head-container{text-align: center;}
+
+        #shoppingcartinfo{
+            list-style: none;
+            margin: 1em;
+            padding: 0;
+        }
+        #shoppingcartinfo li {
+            color: #000;
+            text-align: left;
+        }
+        /* Topnav begin */
+        #topnav{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        #topnav li {
+            float: left;
+            text-align: center;
+        }
+        #topnav li a {
+            background-color: #333;
+            height: 2.3em;
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            line-height: 2.3em;
+        }
+        #topnav-1:hover, #topnav-1.active{
+            background-color: #38456B;
+        }
+        #topnav-2:hover, #topnav-2.active{
+            background-color: #783878;
+        }
+        #topnav-3:hover, #topnav-3.active{
+            background-color: #386B6B;
+        }
+        #topnav-4:hover, #topnav-4.active{
+            background-color: #783838;
+        }
+        #topnav-5:hover, #topnav-5.active{
+            background-color: #787838;
+        }
+        #topnav-6:hover, #topnav-6.active{
+            background-color: #38456B;
+        }
+        #topnav-7:hover, #topnav-7.active{
+            background-color: #783878;
+        }
+        #topnav-sub{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        #topnav-sub li {
+            float: left;
+            text-align: center;
+        }
+        #topnav-sub li {border-bottom: 1px solid #ccc;}
+        #topnav-sub li:last-child {border-bottom: 0;}
+        #topnav-sub li a {
+            background: #fff;
+            height: 2em;
+            color: #000;
+            text-decoration: none;
+            display: block;
+            line-height: 2.3em;
+        }
+        #topnav-sub li a:hover, #topnav-sub li a.active{background: #eee !important;}
+        /* Topnav end */
+
+        #loginModal a{color: #000;text-decoration: underline;font-size: 80%;}
+
+        /* Leftnav begin */
+        #leftnav ul li{border-bottom: 1px solid #dfdfdf;}
+        #leftnav ul li:last-child{border-bottom: 0;}
+        .pure-menu{border:1px solid #dfdfdf;}
+        #leftnav .pure-menu-selected{background: #eee !important;}
+        #leftnav ul li a {color: #000;}
+        .pure-menu-item a {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        /* Leftnav end */
+
+        #itemoverview{margin-left: -1em;}
+        .itemoverview-thumbnail{margin: 1em 0 1em 1em; border: 1px solid #cdcdcd;}
+        .itemoverview-caption{margin: 0 0.5em;}
+
+        #item-detail-title{margin:0 0 1em 0;}
+        #item-detail-no{text-align: right;font-size: 0.75em;}
+        #item-detail-text{margin: 0 0 0 1em;}
+        #item-detail-amount-cont, #item-detail-price-cont{padding-left: 5%;}
+        #item-detail-amount{width: 100%;}
+        #item-detail-size{width: 95%;}
+        #item-detail-more{margin: 0 0 0 1em;}
+        #item-detail-price {
+            color: #b12704;
+            font-size: 1.25em;
+            font-weight: normal;
+            margin: 1em 0 0.5em 0;
+        }
+        #item-detail-versandmwst{font-size: 0.85em; margin-bottom: 1em;}
+        #item-detail-img-main{}
+        #item-detail-img-thumbs{list-style: none; margin: 1em 0 1em 0; padding: 0;}
+        #item-detail-img-thumbs li{margin: 0;}
+        #item-detail-img-thumbs li img{width: 95%}
+        #item-detail-img-thumbs li{text-align: center;}
+        #item-detail-img-thumbs li:first-child{text-align: left;}
+        #item-detail-img-thumbs li:last-child{text-align: right;}
+        .item-detail-suggestion{text-align: center;}
+        .item-detail-suggestion-img{width:90%;}
+
+        .sale-listprice{text-decoration: line-through;color:#000;}
+        .salesprice{font-weight: bold;color: red;}
+
+        .gallery-trenner {
+            background: none repeat scroll 0 0 #000;
+            height: 30px;
+        }
+
+        #cart-wrapper{border: 1px solid #000; padding: 1em;margin-bottom:2em;}
+        #cart-header{display: none;}
+        #cart-header, #customerform-address-header, #customerform-payment-header{
+            background: #000;
+            color: #fff;
+            padding:0.6em;
+            margin-bottom:1em;
+            font-weight: bold;
+        }
+        .cart-product{padding:0.6em; border-bottom: 1px solid #000;}
+        .cart-product-remove{color: inherit;}
+        #cart-summary{border-top:1px solid #000;padding:0.6em;}
+
+        #customerform-errortext, #customerform-address-wrapper, #customerform-paymeht-wrapper, #customerform-tos-wrapper, #customerform-admstate-wrapper, #customerform-shad-wrapper{
+            border: 1px solid #000;
+            padding: 1em;
+            margin-bottom: 2em;
+        }
+        #customerform-submit{}
+        #customerform-submit-wrapper{padding: 0 0 2em 1em;}
+
+        #footer-text{text-align: center;padding:0.75em 0}
+
+        .pure-form-aligned .pure-control-group label {
+            width: 20%;
+            text-align: left;
+        }
+        .pure-form-aligned .pure-controls {
+            margin: 0;
+        }
+        .customerform-payment {
+            margin: 1.5em 0 0 0 !important;
+        }
+        .pure-form-aligned .pure-controls input{margin: 0 1.25em 0 0.5em;vertical-align: -0.1em}
+
+        .pure-form input[type="text"], .pure-form input[type="password"], .pure-form input[type="email"], .pure-form input[type="url"], .pure-form input[type="date"], .pure-form input[type="month"], .pure-form input[type="time"], .pure-form input[type="datetime"], .pure-form input[type="datetime-local"], .pure-form input[type="week"], .pure-form input[type="number"], .pure-form input[type="search"], .pure-form input[type="tel"], .pure-form input[type="color"], .pure-form select, .pure-form textarea{
+            border-radius: 0;
+        }
+        /* Media queries begin */
+        @media screen and (min-width: 35.5em) { /* sm */
+            .container {width: 34em;}
+        }
+        @media screen and (min-width: 48em) { /* md */
+            .container {width: 46em;}
+            #button-head-topnav{display: none;}
+            #logo-head{padding: 1em 0 0.6em 0;}
+            #row-topnav{display: inline-block !important;background: #333;}
+            #topnav li a{border-right: 1px solid #fff;}
+            #topnav li:first-child a{border-left: 1px solid #fff;}
+            #row-main{min-height: 20em;}
+            #col-leftnav-content{padding: 2em 0em 2em 0;}
+            #col-leftnav{display: inline-block;}
+            #col-main{padding: 2em 0 2em 1.5em;}
+            #topnav-sub{display: none;}
+            #cart-header{display: block;}
+            .md-invisible{display: none;}
+            #customerform-address-wrapper{margin:0 1em 2em 0;}
+            #customerform-paymeht-wrapper, #customerform-tos-wrapper, #customerform-info-wrapper, #customerform-admstate-wrapper{margin:0 0 2em 1em;}
+            #customerform-submit{margin: 0;}
+            .hidden-sm{display: inherit;}
+            .only-sm{display:none;}
+
+            .pure-form-aligned .pure-control-group label {
+                text-align: right;
+            }
+        }
+        @media screen and (min-width: 64em) { /* lg */
+            .container {width: 62em;}
+        }
+        @media screen and (min-width: 80em) { /* xl */
+            .container {width: 78em;}
+        }
+        /* Media queries end */
+    </style>
+    <link rel="stylesheet" href="//cdn.haase-it.com/hcsf/2.2.0/hcsf-default.css">
+    {{head_scripts}}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+</head>
+<body>
+<div class="pure-g">
+    <div id="cookienoticecont" style="display: none;" class="pure-u-1">
+        <div id="cookienotice" class="fs">{{ T("cookienotice_info_text") }}</div>
+    </div>
+</div>
+<div class="pure-g" id="row-topbar">
+    <div class="container">
+        <div class="pure-u-1 pure-u-md-3-4" id="logo-head">
+            <a href="/">
+                <img src="data:image/gif;base64,R0lGODlh/gBjAPcAABgYGJGRkbGxsSkpKc/Pzzk5OVhYWEhISHZ2dgwMDP///2hoaAYGBunp6QMDAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS4wLWMwNjEgNjQuMTQwOTQ5LCAyMDEwLzEyLzA3LTEwOjU3OjAxICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgV2luZG93cyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3NkJGQjg0MEIwOTkxMUU0OTE1QUYzQTExNjM1QTM5NiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3NkJGQjg0MUIwOTkxMUU0OTE1QUYzQTExNjM1QTM5NiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjc2QkZCODNFQjA5OTExRTQ5MTVBRjNBMTE2MzVBMzk2IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjc2QkZCODNGQjA5OTExRTQ5MTVBRjNBMTE2MzVBMzk2Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEg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">
+            </a>
+        </div>
+        <div class="pure-u-1 pure-u-md-1-4">
+            {% if langselector is defined %}<div id="headlangselector">{{langselector}}</div>{% endif %}
+            <div class="pure-u-1-3 pure-u-md-1 button-head-container" id="button-head-topnav">
+                <button class="pure-button pure-u-23-24 pure-u-md-1 button-orange button-head">
+                    <i class="fa fa-list"></i>
+                    <span class="hidden-sm">Navigation</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pure-g">
+    <div id="row-topnav" class="pure-u-1">
+        <div class="container">
+            <div class="fs pure-menu-horizontal">
+                <ul id="topnav">
+                    {% if not maintenancemode %}
+                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie1/" id="topnav-1"{{ subnavkey == 'category1' ? ' class="active"' : '' }}>{{ T("topnav_category1") }}</a>
+                            {% if subnavkey == 'category1' %}
+                                <ul id="topnav-sub">
+                                {% if subnav is defined %}
+                                    {% for title, link in subnav %}
+                                        <li class="pure-u-1"><a href="{{link}}"{% if requesturi matches '~^'~link~'item/([0-9a-zA-Z]+)\\.html(\\?.+)?~' or requesturi matches '~^'~link~'(index.html)?(\\?.+)?~' %} class="active"{% endif %}>{{title}}</a></li>
+                                    {% endfor %}
+                                {% endif %}
+                                </ul>{% endif %}</li>
+                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie2/" id="topnav-2"{{ subnavkey == 'category2' ? ' class="active"' : '' }}>{{ T("topnav_category2") }}</a>
+                            {% if subnavkey == 'category2' %}
+                                <ul id="topnav-sub">
+                                {% if subnav is defined %}
+                                    {% for title, link in subnav %}
+                                        <li class="pure-u-1"><a href="{{link}}"{% if requesturi matches '~^'~link~'item/([0-9a-zA-Z]+)\\.html(\\?.+)?~' or requesturi matches '~^'~link~'(index.html)?(\\?.+)?~' %} class="active"{% endif %}>{{title}}</a></li>
+                                    {% endfor %}
+                                {% endif %}
+                                </ul>{% endif %}</li>
+                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie3/" id="topnav-3"{{ subnavkey == 'category3' ? ' class="active"' : '' }}>{{ T("topnav_category3") }}</a>
+                            {% if subnavkey == 'category3' %}
+                                <ul id="topnav-sub">
+                                {% if subnav is defined %}
+                                    {% for title, link in subnav %}
+                                        <li class="pure-u-1"><a href="{{link}}"{% if requesturi matches '~^'~link~'item/([0-9a-zA-Z]+)\\.html(\\?.+)?~' or requesturi matches '~^'~link~'(index.html)?(\\?.+)?~' %} class="active"{% endif %}>{{title}}</a></li>
+                                    {% endfor %}
+                                {% endif %}
+                                </ul>{% endif %}</li>
+                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie4/" id="topnav-4"{{ subnavkey == 'category4' ? ' class="active"' : '' }}>{{ T("topnav_category4") }}</a>
+                            {% if subnavkey == 'category4' %}
+                                <ul id="topnav-sub">
+                                {% if subnav is defined %}
+                                    {% for title, link in subnav %}
+                                        <li class="pure-u-1"><a href="{{link}}"{% if requesturi matches '~^'~link~'item/([0-9a-zA-Z]+)\\.html(\\?.+)?~' or requesturi matches '~^'~link~'(index.html)?(\\?.+)?~' %} class="active"{% endif %}>{{title}}</a></li>
+                                    {% endfor %}
+                                {% endif %}
+                                </ul>{% endif %}</li>
+                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie5/" id="topnav-5"{{ subnavkey == 'category5' ? ' class="active"' : '' }}>{{ T("topnav_category5") }}</a>
+                            {% if subnavkey == 'category5' %}
+                                <ul id="topnav-sub">
+                                {% if subnav is defined %}
+                                    {% for title, link in subnav %}
+                                        <li class="pure-u-1"><a href="{{link}}"{% if requesturi matches '~^'~link~'item/([0-9a-zA-Z]+)\\.html(\\?.+)?~' or requesturi matches '~^'~link~'(index.html)?(\\?.+)?~' %} class="active"{% endif %}>{{title}}</a></li>
+                                    {% endfor %}
+                                {% endif %}
+                                </ul>{% endif %}</li>
+                        <li class="pure-u-1 pure-u-md-3-24"><a href="/faq.html" id="topnav-6"{{ requesturi == '/faq.html' ? ' class="active"' : '' }}>{{ T("topnav_faq") }}</a></li>
+                        <li class="pure-u-1 pure-u-md-1-24"><a href="/_misc/login.html" id="topnav-7"{{ requesturi == '/_misc/login.html' ? ' class="active"' : '' }}><i class="fa fa-user"></i> <span class="only-sm">Login / Register</span></a></li>
+                    {% else %}
+                        <li class="pure-u-1"><a href="#">&nbsp;</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pure-g" id="row-main">
+    <div class="container">
+        {% if widecontent == false %}
+        <div class="pure-u-1 pure-u-md-4-24" id="col-leftnav">
+            <div id="col-leftnav-content">
+                <div class="pure-menu fs" id="leftnav">
+                    {% if subnav is defined %}
+                        <ul class="pure-menu-list">
+                            {% for title, link in subnav %}
+                                <li class="pure-menu-item{% if requesturi matches '~^'~link~'item/([0-9a-zA-Z]+)\\.html(\\?.+)?~' or requesturi matches '~^'~link~'(index.html)?(\\?.+)?~' %} pure-menu-selected{% endif %}"><a href="{{link}}" class="pure-menu-link">{{title}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div><div class="pure-u-1 pure-u-md-20-24">
+            <div id="col-main">
+                {% else %}
+                <div class="pure-u-1">
+                    <div id="col-main">
+                        {% endif %}
+
+                        {% autoescape false %}
+                        {% if (customcontenttemplate is defined and customcontenttemplate|trim != '') %}
+                            <div class="fs">
+                                {% include customcontenttemplate ~ '.twig' %}
+                            </div>
+                        {% else %}
+                            <div class="fs">
+                                {% if config.parsecontent == true %}
+                                    {{ include(template_from_string(content)) }}
+                                {% else %}
+                                    {{content}}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endautoescape %}
+            </div>
+        </div>
+        <div class="pure-g" id="row-footer"><div class="pure-u-1 fs" id="footer-text">{{ T("footer_copyright") }}</div></div>
+        {{ debugdata }}
+        <script type="text/javascript" src="//cdn.haase-it.com/hcsf/2.3.0/hcsf-default.js"></script>
+        <script type="text/javascript">
+            $(function() {
+
+                $("#button-head-topnav").click(function(){
+                    $("#row-topnav").toggle();
+                });
+                // Avoid `console` errors in browsers that lack a console.
+                (function() {
+                    var method;
+                    var noop = function () {};
+                    var methods = [
+                        'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+                        'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+                        'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+                        'timeStamp', 'trace', 'warn'
+                    ];
+                    var length = methods.length;
+                    var console = (window.console = window.console || {});
+
+                    while (length--) {
+                        method = methods[length];
+
+                        // Only stub undefined methods.
+                        if (!console[method]) {
+                            console[method] = noop;
+                        }
+                    }
+                }());
+                function getCookie(cname) {
+                    var name = cname + "=";
+                    var ca = document.cookie.split(';');
+                    for(var i=0; i<ca.length; i++) {
+                        var c = ca[i];
+                        while (c.charAt(0)==' ') c = c.substring(1);
+                        if (c.indexOf(name) != -1) return c.substring(name.length,c.length);
+                    }
+                    return "";
+                }
+                var acceptscookies = getCookie('acceptscookies');
+                if (acceptscookies == 'yes') {
+                    console.log('You have accepted to use cookies on this site. To opt out again, please clear your cookies for this site.');
+                } else {
+                    function setCookie(cname, cvalue, exdays) {
+                        var d = new Date();
+                        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+                        var expires = "expires="+d.toUTCString();
+                        document.cookie = cname + "=" + cvalue + "; path=/; " + expires;
+                    }
+                    $( "#cookienoticecont" ).slideDown( "slow", function() {
+                        // Animation complete.
+                    });
+                    $("a").click(function(){
+                        setCookie('acceptscookies', 'yes', 365);
+                    });
+                }
+            });
+        </script>
+        <script type="text/javascript" charset="utf-8">
+            $(function () {
+                $("[rel='tooltip']").tooltip();
+            });
+        </script>
+        {{end_body_code}}
+</body>
+</html>
