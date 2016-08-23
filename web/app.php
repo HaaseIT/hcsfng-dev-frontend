@@ -20,19 +20,9 @@
 
 require __DIR__.'/../app/init.php';
 
-
-
-$aP = json_decode(file_get_contents('../repository/pages/de/index.json'), true);
-
-
-
-
-
-
-
 $response = new \Zend\Diactoros\Response();
-//$response = $response->withStatus($P->iStatus);
-$response->getBody()->write($container['twig']->render($container['conf']["template_base"], $aP));
+$response = $response->withStatus($P->status);
+$response->getBody()->write($container['twig']->render($container['conf']["template_base"], $P->payload));
 
 $emitter = new \Zend\Diactoros\Response\SapiEmitter();
 $emitter->emit($response);
