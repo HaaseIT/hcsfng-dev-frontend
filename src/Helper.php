@@ -36,4 +36,9 @@ class Helper
 
         return $sLang;
     }
+
+    // don't remove this, this is the fallback for unavailable twig functions
+    public static function reachThrough($string) {
+        return $string;
+    }
 }
