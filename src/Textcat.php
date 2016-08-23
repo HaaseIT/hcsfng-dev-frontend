@@ -5,13 +5,13 @@ namespace HaaseIT\HCSFNG\Frontend;
 
 class Textcat
 {
-    protected $T, $sLang, $sDefaultlang, $bVerbose, $logdir;
+    protected $T, $sLang, $sDefaultlang, $logdir, $container;
 
-    public function __construct($container, $defaultlang, $verbose = false, $logdir = '')
+    public function __construct($container, $logdir = '')
     {
+        $this->container = $container;
         $this->sLang = \filter_var($container['lang'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
-        $this->sDefaultlang = \filter_var($defaultlang, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
-        $this->bVerbose = $verbose;
+        $this->sDefaultlang = \filter_var($container['defaultlang'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
         $this->logdir = $logdir;
     }
 
@@ -56,7 +56,7 @@ class Textcat
                     error_log(date('c').' Missing Text: '.$sTextkey.PHP_EOL, 3, $this->logdir.DIRECTORY_SEPARATOR.'errors_textcats.log');
                 }
                 if ($bReturnFalseIfNotAvailable) return false;
-                elseif ($this->bVerbose) $return = 'Missing Text: '.$sTextkey;
+                elseif ($this->container['conf']['textcatsverbose']) $return = 'Missing Text: '.$sTextkey;
             }
         }
 
