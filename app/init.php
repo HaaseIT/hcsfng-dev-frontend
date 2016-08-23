@@ -106,11 +106,11 @@ $container['twig'] = function ($c) {
 date_default_timezone_set($container['conf']["defaulttimezone"]);
 
 $container['lang'] = \HaaseIT\HCSFNG\Frontend\Helper::getLanguage($container);
+$container['defaultlang'] = key($container['conf']["lang_available"]);
 
 $container['textcats'] = function ($c)
 {
-    $langavailable = $c['conf']["lang_available"];
-    $textcats = new \HaaseIT\HCSFNG\Frontend\Textcat($c, key($langavailable), $c['conf']['textcatsverbose'], PATH_LOGS);
+    $textcats = new \HaaseIT\HCSFNG\Frontend\Textcat($c, PATH_LOGS);
     $textcats->loadTextcats();
 
     return $textcats;
