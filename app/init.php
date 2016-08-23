@@ -60,7 +60,6 @@ $container['conf'] = function ($c) {
     if (is_file(__DIR__.'/config/core.yml')) $conf = array_merge($conf, Yaml::parse(file_get_contents(__DIR__.'/config/core.yml')));
     //$conf = array_merge($conf, Yaml::parse(file_get_contents(__DIR__.'/config/config.countries.yml')));
     //$conf = array_merge($conf, Yaml::parse(file_get_contents(__DIR__.'/config/config.scrts.yml')));
-    $conf['directory_images'] = trim($conf['directory_images'], " \t\n\r\0\x0B/"); // trim this
 
     if (!empty($conf['maintenancemode']) && $conf['maintenancemode']) {
         $conf["templatecache_enable"] = false;
