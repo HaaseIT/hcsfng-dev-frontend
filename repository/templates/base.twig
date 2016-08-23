@@ -427,7 +427,7 @@ import "macros.twig" as macro %}<!DOCTYPE html>
             <div class="fs pure-menu-horizontal">
                 <ul id="topnav">
                     {% if not maintenancemode %}
-                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie1/" id="topnav-1"{{ subnavkey == 'category1' ? ' class="active"' : '' }}>{{ T("topnav_category1") }}</a>
+                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie1/" id="topnav-1"{{ subnavkey == 'category1' ? ' class="active"' : '' }}>{{ T("topnav1") }}</a>
                             {% if subnavkey == 'category1' %}
                                 <ul id="topnav-sub">
                                 {% if subnav is defined %}
@@ -436,7 +436,7 @@ import "macros.twig" as macro %}<!DOCTYPE html>
                                     {% endfor %}
                                 {% endif %}
                                 </ul>{% endif %}</li>
-                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie2/" id="topnav-2"{{ subnavkey == 'category2' ? ' class="active"' : '' }}>{{ T("topnav_category2") }}</a>
+                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie2/" id="topnav-2"{{ subnavkey == 'category2' ? ' class="active"' : '' }}>{{ T("topnav2") }}</a>
                             {% if subnavkey == 'category2' %}
                                 <ul id="topnav-sub">
                                 {% if subnav is defined %}
@@ -445,7 +445,7 @@ import "macros.twig" as macro %}<!DOCTYPE html>
                                     {% endfor %}
                                 {% endif %}
                                 </ul>{% endif %}</li>
-                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie3/" id="topnav-3"{{ subnavkey == 'category3' ? ' class="active"' : '' }}>{{ T("topnav_category3") }}</a>
+                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie3/" id="topnav-3"{{ subnavkey == 'category3' ? ' class="active"' : '' }}>{{ T("topnav3") }}</a>
                             {% if subnavkey == 'category3' %}
                                 <ul id="topnav-sub">
                                 {% if subnav is defined %}
@@ -454,7 +454,7 @@ import "macros.twig" as macro %}<!DOCTYPE html>
                                     {% endfor %}
                                 {% endif %}
                                 </ul>{% endif %}</li>
-                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie4/" id="topnav-4"{{ subnavkey == 'category4' ? ' class="active"' : '' }}>{{ T("topnav_category4") }}</a>
+                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie4/" id="topnav-4"{{ subnavkey == 'category4' ? ' class="active"' : '' }}>{{ T("topnav4") }}</a>
                             {% if subnavkey == 'category4' %}
                                 <ul id="topnav-sub">
                                 {% if subnav is defined %}
@@ -463,7 +463,7 @@ import "macros.twig" as macro %}<!DOCTYPE html>
                                     {% endfor %}
                                 {% endif %}
                                 </ul>{% endif %}</li>
-                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie5/" id="topnav-5"{{ subnavkey == 'category5' ? ' class="active"' : '' }}>{{ T("topnav_category5") }}</a>
+                        <li class="pure-u-1 pure-u-md-4-24"><a href="/kategorie5/" id="topnav-5"{{ subnavkey == 'category5' ? ' class="active"' : '' }}>{{ T("topnav5") }}</a>
                             {% if subnavkey == 'category5' %}
                                 <ul id="topnav-sub">
                                 {% if subnav is defined %}
@@ -472,7 +472,7 @@ import "macros.twig" as macro %}<!DOCTYPE html>
                                     {% endfor %}
                                 {% endif %}
                                 </ul>{% endif %}</li>
-                        <li class="pure-u-1 pure-u-md-3-24"><a href="/faq.html" id="topnav-6"{{ requesturi == '/faq.html' ? ' class="active"' : '' }}>{{ T("topnav_faq") }}</a></li>
+                        <li class="pure-u-1 pure-u-md-3-24"><a href="/faq.html" id="topnav-6"{{ requesturi == '/faq.html' ? ' class="active"' : '' }}>{{ T("topnav6") }}</a></li>
                         <li class="pure-u-1 pure-u-md-1-24"><a href="/_misc/login.html" id="topnav-7"{{ requesturi == '/_misc/login.html' ? ' class="active"' : '' }}><i class="fa fa-user"></i> <span class="only-sm">Login / Register</span></a></li>
                     {% else %}
                         <li class="pure-u-1"><a href="#">&nbsp;</a></li>
@@ -487,15 +487,15 @@ import "macros.twig" as macro %}<!DOCTYPE html>
         {% if widecontent == false %}
         <div class="pure-u-1 pure-u-md-4-24" id="col-leftnav">
             <div id="col-leftnav-content">
+                {% if subnav is defined %}
                 <div class="pure-menu fs" id="leftnav">
-                    {% if subnav is defined %}
-                        <ul class="pure-menu-list">
-                            {% for title, link in subnav %}
-                                <li class="pure-menu-item{% if requesturi matches '~^'~link~'item/([0-9a-zA-Z]+)\\.html(\\?.+)?~' or requesturi matches '~^'~link~'(index.html)?(\\?.+)?~' %} pure-menu-selected{% endif %}"><a href="{{link}}" class="pure-menu-link">{{title}}</a></li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+                    <ul class="pure-menu-list">
+                        {% for title, link in subnav %}
+                            <li class="pure-menu-item{% if requesturi matches '~^'~link~'item/([0-9a-zA-Z]+)\\.html(\\?.+)?~' or requesturi matches '~^'~link~'(index.html)?(\\?.+)?~' %} pure-menu-selected{% endif %}"><a href="{{link}}" class="pure-menu-link">{{title}}</a></li>
+                        {% endfor %}
+                    </ul>
                 </div>
+                {% endif %}
             </div>
         </div><div class="pure-u-1 pure-u-md-20-24">
             <div id="col-main">
