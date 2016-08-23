@@ -3,4 +3,3 @@ conf
 logs
 users
 app/config/core.yml
-app/config/environments.yml
