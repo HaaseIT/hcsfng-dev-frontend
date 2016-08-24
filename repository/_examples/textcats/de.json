@@ -1,6 +1,13 @@
 {
+  "warning_page_not_found_in_requested_lang_1": "Die gewünschte Seite wurde in ",
+  "warning_page_not_found_in_requested_lang_2": " nicht gefunden, daher stellen wir sie in der Standardsprache ",
+  "warning_page_not_found_in_requested_lang_3": " dar.",
+  "language_de": "Deutsch",
+  "language_en": "Englisch",
+  "language_es": "Spanisch",
+
   "footer_copyright": "Copyright by Haase IT",
-  "cookienotice_info_text": "Cookienotice infotext",
+  "cookienotice_info_text": "Diese Website verwendet Cookies, um Ihnen den bestmöglichen Service zu gewährleisten. Wenn Sie auf der Seite weitersurfen stimmen Sie der Cookie-Nutzung zu.",
   "topnav1": "Topnav 1",
   "topnav2": "Topnav 2",
   "topnav3": "Topnav 3",
