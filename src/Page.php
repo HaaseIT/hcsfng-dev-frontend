@@ -6,7 +6,7 @@ namespace HaaseIT\HCSFNG\Frontend;
 class Page
 {
     protected $container;
-    public $payload, $status;
+    public $payload, $status, $headers;
 
     public function __construct($container, $payload)
     {
