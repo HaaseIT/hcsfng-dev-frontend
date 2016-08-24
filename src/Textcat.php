@@ -18,14 +18,14 @@ class Textcat
     public function loadTextcats()
     {
         // get textcat for the current language
-        if (is_file(PATH_TEXTCATS.$this->sLang.'.json')) {
-            $aTextcat[$this->sLang] = json_decode(file_get_contents(PATH_TEXTCATS.$this->sLang.'.json'), true);
+        if (is_file(PATH_TEXTCATS.DIRECTORY_SEPARATOR.$this->sLang.'.json')) {
+            $aTextcat[$this->sLang] = json_decode(file_get_contents(PATH_TEXTCATS.DIRECTORY_SEPARATOR.$this->sLang.'.json'), true);
         }
 
         // if the current language is not the default language, get the defauld language aswell
         if ($this->sLang != $this->sDefaultlang) {
-            if (is_file(PATH_TEXTCATS.$this->sDefaultlang.'.json')) {
-                $aTextcat[$this->sDefaultlang] = json_decode(file_get_contents(PATH_TEXTCATS.$this->sDefaultlang.'.json'), true);
+            if (is_file(PATH_TEXTCATS.DIRECTORY_SEPARATOR.$this->sDefaultlang.'.json')) {
+                $aTextcat[$this->sDefaultlang] = json_decode(file_get_contents(PATH_TEXTCATS.DIRECTORY_SEPARATOR.$this->sDefaultlang.'.json'), true);
             }
         }
 
