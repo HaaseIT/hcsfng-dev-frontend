@@ -20,10 +20,11 @@ class Router
         if (is_file(PATH_PAGES.$jsonfilename)) {
             $return = json_decode(file_get_contents(PATH_PAGES.$jsonfilename), true);
         } elseif ($this->container['lang'] != $this->container['defaultlang']) {
-            if (is_file(PATH_PAGES.$this->container['defaultlang'].$jsonfilename)) {
-                $return = json_decode(file_get_contents(PATH_PAGES.DIRECTORY_SEPARATOR.$this->container['defaultlang'].$jsonfilename), true);
+            $jsonfilename = '/'.$this->container['defaultlang'].substr($jsonfilename, 3);
+            if (is_file(PATH_PAGES.$jsonfilename)) {
+                $return = json_decode(file_get_contents(PATH_PAGES.$jsonfilename), true);
                 // todo: add textcat for following message
-                $return['content'] = 'Not Found in '.$this->container['lang'].', displaying in '.$this->container['defaultlang'].'.<br>'.$return['content'];
+                $return['content'] = 'Not Found in '.$this->container['textcats']->T('language_'.$this->container['lang']).', displaying in '.$this->container['defaultlang'].'.<br>'.$return['content'];
             }
         }
 
@@ -41,8 +42,9 @@ class Router
             if (!Helper::$langprefixset && Helper::$singlelangmode) {
                 $this->sPath = '/' . $this->container['lang'] . $this->sPath;
             }
+            $foo = substr(Helper::normalizePath(PATH_PAGES . dirname($this->sPath)), 0, strlen(PATH_PAGES));
             // the condition in the following line should make directory traversal impossible.
-            if (substr(realpath(PATH_PAGES . dirname($this->sPath)), 0, strlen(PATH_PAGES)) == PATH_PAGES) {
+            if (substr(Helper::normalizePath(PATH_PAGES . dirname($this->sPath)), 0, strlen(PATH_PAGES)) == PATH_PAGES) {
 
                 // try to fetch json
                 $payload = $this->tryFetchingJson();

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mhaase
- * Date: 23.08.2016
- * Time: 11:00
- */
 
 namespace HaaseIT\HCSFNG\Frontend;
 
