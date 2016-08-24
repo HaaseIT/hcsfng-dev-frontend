@@ -7,6 +7,23 @@ class Helper
 {
     public static $langprefixset = false, $singlelangmode = true;
 
+    public static function enrichPagePayload($container, $P)
+    {
+        $P->payload['lang'] = $container['lang'];
+        $P->payload['defaultlang'] = $container['defaultlang'];
+
+        // this comes last or some data will be missing from debug output
+        if ($container['conf']['debug']) {
+            ob_start();
+            var_dump($P->payload);
+            $content = htmlspecialchars(ob_get_contents());
+            ob_end_clean();
+            $P->payload['debug'] = $content;
+        }
+
+        return $P;
+    }
+
     public static function getLanguage($container)
     {
         $langavailable = $container['conf']["lang_available"];
