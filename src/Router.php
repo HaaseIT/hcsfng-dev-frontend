@@ -23,7 +23,6 @@ class Router
             $jsonfilename = '/'.$this->container['defaultlang'].substr($jsonfilename, 3);
             if (is_file(PATH_PAGES.$jsonfilename)) {
                 $return = json_decode(file_get_contents(PATH_PAGES.$jsonfilename), true);
-                // todo: add textcat for following message
                 $return['warning_language'] = true;
             }
         }
