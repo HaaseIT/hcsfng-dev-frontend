@@ -511,6 +511,14 @@ import "macros.twig" as macro %}<!DOCTYPE html>
                             </div>
                         {% else %}
                             <div class="fs">
+                                {% if warning_language %}
+                                    {{ T('warning_page_not_found_in_requested_lang_1') }}
+                                    {{ T('language_' ~ lang) }}
+                                    {{ T('warning_page_not_found_in_requested_lang_2') }}
+                                    {{ T('language_' ~ defaultlang) }}
+                                    {{ T('warning_page_not_found_in_requested_lang_3') }}
+                                {% endif %}
+                                <br><br>
                                 {% if config.parsecontent == true %}
                                     {{ include(template_from_string(content)) }}
                                 {% else %}
@@ -524,7 +532,7 @@ import "macros.twig" as macro %}<!DOCTYPE html>
             </div>
         </div>
         <div class="pure-g" id="row-footer"><div class="pure-u-1 fs" id="footer-text">{{ T("footer_copyright") }}</div></div>
-        {{ debugdata }}
+        {{ debug ? '<pre class="debug">'~debug~'</pre>' }}
         <script type="text/javascript" src="//cdn.haase-it.com/hcsf/2.3.0/hcsf-default.js"></script>
         <script type="text/javascript">
             $(function() {
