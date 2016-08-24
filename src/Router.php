@@ -24,7 +24,7 @@ class Router
             if (is_file(PATH_PAGES.$jsonfilename)) {
                 $return = json_decode(file_get_contents(PATH_PAGES.$jsonfilename), true);
                 // todo: add textcat for following message
-                $return['content'] = 'Not Found in '.$this->container['textcats']->T('language_'.$this->container['lang']).', displaying in '.$this->container['defaultlang'].'.<br>'.$return['content'];
+                $return['warning_language'] = true;
             }
         }
 
