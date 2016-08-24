@@ -22,7 +22,20 @@ require __DIR__.'/../app/init.php';
 
 $response = new \Zend\Diactoros\Response();
 $response = $response->withStatus($P->status)->withHeader('Content-Language', $container['lang']);
-$response->getBody()->write($container['twig']->render($container['conf']["template_base"], $P->payload));
+$omitbody = false;
+
+if (!empty($P->headers)) {
+    foreach ($P->headers as $key => $value) {
+        $response = $response->withHeader($key, $value);
+        if (mb_strtolower($key) == 'location') {
+            $omitbody = true;
+        }
+    }
+}
+
+if (!$omitbody){
+    $response->getBody()->write($container['twig']->render($container['conf']["template_base"], $P->payload));
+}
 
 $emitter = new \Zend\Diactoros\Response\SapiEmitter();
 $emitter->emit($response);
