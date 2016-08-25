@@ -23,7 +23,10 @@
     "aura/autoload": "^2.0.3",
     "zendframework/zend-diactoros": "^1.1.4",
     "symfony/yaml": "^3.1.1",
-    "pimple/pimple": "~3.0"
+    "pimple/pimple": "~3.0",
+    "league/flysystem": "^1.0.27",
+    "league/flysystem-webdav": "^1.0",
+    "cedricziel/twig-loader-flysystem": "^1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.4.6"
