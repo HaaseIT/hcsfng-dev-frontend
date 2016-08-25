@@ -21,8 +21,6 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
-require_once __DIR__.'/config/constants.php';
-ini_set('error_log', PATH_LOGS.DIRECTORY_SEPARATOR.'php_error.log');
 ini_set('xdebug.overload_var_dump', 0);
 ini_set('xdebug.var_display_max_depth', 10);
 ini_set('html_errors', 0);
@@ -78,6 +76,23 @@ $container['conf'] = function ($c) {
 
     return $conf;
 };
+
+// ----------------------------------------------------------------------------
+// Begin constants definition
+// ----------------------------------------------------------------------------
+const DIRNAME_TEMPLATECACHE = 'templates';
+define('DIRNAME_CACHE', $container['conf']['dirname_cache']);
+define('DIRNAME_DOCROOT', $container['conf']['dirname_docroot']);
+define('DIRNAME_LOGS', $container['conf']['dirname_logs']);
+define('DIRNAME_TEMPLATES', $container['conf']['dirname_templates']);
+define('DIRNAME_TEXTCATS', $container['conf']['dirname_textcats']);
+define('DIRNAME_PAGES', $container['conf']['dirname_pages']);
+
+define('PATH_BASEDIR', realpath(__DIR__.DIRECTORY_SEPARATOR.'..'));
+define('PATH_DOCROOT', PATH_BASEDIR.DIRECTORY_SEPARATOR.DIRNAME_DOCROOT);
+define('PATH_CACHE', PATH_BASEDIR.DIRECTORY_SEPARATOR.DIRNAME_CACHE);
+define('PATH_LOGS', PATH_BASEDIR.DIRECTORY_SEPARATOR.DIRNAME_LOGS);
+define('PATH_TEMPLATECACHE', PATH_CACHE.DIRECTORY_SEPARATOR.DIRNAME_TEMPLATECACHE);
 
 // ----------------------------------------------------------------------------
 // Begin Repository filesystem loading and init

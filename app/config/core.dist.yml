@@ -40,3 +40,13 @@ numberformat_decimals: 2
 numberformat_decimal_point: ','
 numberformat_thousands_seperator: '.'
 allow_parsing_of_page_content: false
+
+# Directory names here
+# the following directories are relative to the base folder of the installation
+dirname_docroot: web
+dirname_cache: cache
+dirname_logs: logs
+#the following directories are relative to the repository root defined in repository.yml
+dirname_templates: templates
+dirname_textcats: textcats
+dirname_pages: pages

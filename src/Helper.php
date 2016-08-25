@@ -94,7 +94,7 @@ class Helper
 
     public static function initTwig($container)
     {
-        $loader = new \CedricZiel\TwigLoaderFlysystem\FlysystemLoader($container['repository'], DIRNAME_TEMPLATECACHE.DIRECTORY_SEPARATOR);
+        $loader = new \CedricZiel\TwigLoaderFlysystem\FlysystemLoader($container['repository'], DIRNAME_TEMPLATES.DIRECTORY_SEPARATOR);
 
         $twig_options = [
             'autoescape' => false,
