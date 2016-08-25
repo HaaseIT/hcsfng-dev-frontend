@@ -1,7 +1,4 @@
 {
-  "content": "",
   "type": "shorturl",
-  "config": {
-    "target": "https://www.haase-it.com/"
-  }
+  "target": "https://www.haase-it.com/"
 }
