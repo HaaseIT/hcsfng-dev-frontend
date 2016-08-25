@@ -65,4 +65,29 @@ class Helper
         return DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $absolutes);
     }
 
+    public static function initRepository($container)
+    {
+        if (
+            $container['conf']['repository']['type'] == 'localrelative'
+            ||
+            $container['conf']['repository']['type'] == 'localabsolute'
+        ) {
+            if ($container['conf']['repository']['type'] == 'localrelative') {
+                $basepath = realpath(PATH_BASEDIR.DIRECTORY_SEPARATOR.$container['conf']['repository']['url']);
+            } elseif ($container['conf']['repository']['type'] == 'localabsolute') {
+                $basepath = realpath($container['conf']['repository']['url']);
+            }
+
+            if (!empty($basepath)) {
+                $adapter = new \League\Flysystem\Adapter\Local($basepath);
+            }
+        }
+
+
+        if (!empty($adapter)) {
+            return new \League\Flysystem\Filesystem($adapter);
+        }
+
+        return false;
+    }
 }
