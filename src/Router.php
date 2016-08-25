@@ -12,22 +12,54 @@ class Router
         $this->container = $container;
     }
 
+    /**
+     * @return bool|array
+     */
     protected function tryFetchingJson()
     {
-        $return = false;
-
         $jsonfilename = $this->sPath.'.json';
-        if (is_file(PATH_PAGES.$jsonfilename)) {
-            $return = json_decode(file_get_contents(PATH_PAGES.$jsonfilename), true);
-        } elseif ($this->container['lang'] != $this->container['defaultlang']) {
-            $jsonfilename = '/'.$this->container['defaultlang'].substr($jsonfilename, 3);
-            if (is_file(PATH_PAGES.$jsonfilename)) {
-                $return = json_decode(file_get_contents(PATH_PAGES.$jsonfilename), true);
-                $return['warning_language'] = true;
+
+        // if the page file is found and had valid json, return it
+        if ($this->container['repository']->has(DIRNAME_PAGES.$jsonfilename)) {
+            $pagedata = json_decode($this->container['repository']->read(DIRNAME_PAGES.$jsonfilename), true);
+            if ($this->checkForValidPage($pagedata)) {
+                return $pagedata;
             }
         }
 
-        return $return;
+        // if this is not the default language, try again with the default language
+        if ($this->container['lang'] != $this->container['defaultlang']) {
+            //rewrite the language prefix to the default language
+            $jsonfilename = '/'.$this->container['defaultlang'].substr($jsonfilename, 3);
+
+            if ($this->container['repository']->has(DIRNAME_PAGES.$jsonfilename)) {
+                $pagedata = json_decode($this->container['repository']->read(DIRNAME_PAGES.$jsonfilename), true);
+                if ($this->checkForValidPage($pagedata)) {
+                    // add language warning
+                    $pagedata['warning_language'] = true;
+                    return $pagedata;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    protected function checkForValidPage($pagedata)
+    {
+        // if the pagedata is empty, not an array or has no type set, return false
+        if (empty($pagedata) || !is_array($pagedata) || empty($pagedata['type'])) {
+            return false;
+        }
+        // if the pagedata is of type shorturl, a target is required
+        if ($pagedata['type'] == 'shorturl' && !empty($pagedata['target'])) {
+            return true;
+        }
+        if ($pagedata['type'] == 'content') {
+            return true;
+        }
+
+        return false;
     }
 
     public function getPage()
@@ -41,37 +73,33 @@ class Router
             if (!Helper::$langprefixset && Helper::$singlelangmode) {
                 $this->sPath = '/' . $this->container['lang'] . $this->sPath;
             }
-            $foo = substr(Helper::normalizePath(PATH_PAGES . dirname($this->sPath)), 0, strlen(PATH_PAGES));
-            // the condition in the following line should make directory traversal impossible.
-            if (substr(Helper::normalizePath(PATH_PAGES . dirname($this->sPath)), 0, strlen(PATH_PAGES)) == PATH_PAGES) {
 
-                // try to fetch json
-                $payload = $this->tryFetchingJson();
+            // try to fetch json
+            $payload = $this->tryFetchingJson();
 
-                // if the previous fetch failed and the last part of the path has no . in it, append /index.html and try again
-                if (empty($payload)) {
-                    $retryfetchpayload = false;
-                    $aPath = explode('/', $this->sPath);
-                    if (mb_strpos($aPath[count($aPath) - 1], '.') === false && $aPath[count($aPath) - 1] != '') {
-                        $this->sPath .= '/';
-                        $retryfetchpayload = true;
-                    }
-                    if ($this->sPath[strlen($this->sPath) - 1] == '/') {
-                        $this->sPath .= 'index.html';
-                        $retryfetchpayload = true;
-                    }
-                    if ($retryfetchpayload) {
-                        $payload = $this->tryFetchingJson();
-                    }
+            // if the previous fetch failed and the last part of the path has no . in it, append /index.html and try again
+            if (empty($payload)) {
+                $retryfetchpayload = false;
+                $aPath = explode('/', $this->sPath);
+                if (mb_strpos($aPath[count($aPath) - 1], '.') === false && $aPath[count($aPath) - 1] != '') {
+                    $this->sPath .= '/';
+                    $retryfetchpayload = true;
                 }
+                if ($this->sPath[strlen($this->sPath) - 1] == '/') {
+                    $this->sPath .= 'index.html';
+                    $retryfetchpayload = true;
+                }
+                if ($retryfetchpayload) {
+                    $payload = $this->tryFetchingJson();
+                }
+            }
 
-                if (!empty($payload)) {
-                    if (empty($payload['type']) || $payload['type'] == 'content') {
-                        $this->P = new PageStatic($this->container, $payload);
-                    } elseif ($payload['type'] == 'shorturl' && !empty($payload['config']['target'])) {
-                        $this->P = new PageRedirect($this->container,
-                            ['headers' => ['Location' => $payload['config']['target']]]);
-                    }
+            if (!empty($payload)) {
+                if (empty($payload['type']) || $payload['type'] == 'content') {
+                    $this->P = new PageStatic($this->container, $payload);
+                } elseif ($payload['type'] == 'shorturl') {
+                    $this->P = new PageRedirect($this->container,
+                        ['headers' => ['Location' => $payload['target']]]);
                 }
             }
         }
