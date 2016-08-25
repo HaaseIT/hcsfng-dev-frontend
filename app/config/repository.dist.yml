@@ -6,7 +6,5 @@ url: repository
 #type: localabsolute
 #url: /var/www/html/somedirectory/repository
 
-#type: dav
-#url: https://www.haase-it.com/dummy_endpoint/repository
-#user: john_doe
-#password: secret
+#type: guzzle
+#url: https://username:password@www.haase-it.com/dummy_endpoint/repository
