@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7a4d09be4535fd51d4bf59b9684c3b21",
-    "content-hash": "84939e2db65a1f272c1c4ffcd72cd8a2",
+    "hash": "a913881ddf75ad9a5ea9fbd8ccaf4d0b",
+    "content-hash": "0181930460255ac2bb679cb9d41f1acd",
     "packages": [
         {
             "name": "aura/autoload",
@@ -61,16 +61,16 @@
         },
         {
             "name": "cedricziel/twig-loader-flysystem",
-            "version": "dev-master",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/HaaseIT/twig-loader-flysystem.git",
-                "reference": "77c845d0e091d84d0ed0086a2f25d363c2c10b6d"
+                "url": "https://github.com/cedricziel/twig-loader-flysystem.git",
+                "reference": "b8cffa7aab9bd5bfe888542149eb526c25fc4a6b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/HaaseIT/twig-loader-flysystem/zipball/77c845d0e091d84d0ed0086a2f25d363c2c10b6d",
-                "reference": "77c845d0e091d84d0ed0086a2f25d363c2c10b6d",
+                "url": "https://api.github.com/repos/cedricziel/twig-loader-flysystem/zipball/b8cffa7aab9bd5bfe888542149eb526c25fc4a6b",
+                "reference": "b8cffa7aab9bd5bfe888542149eb526c25fc4a6b",
                 "shasum": ""
             },
             "require": {
@@ -86,7 +86,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -94,19 +94,7 @@
                     "CedricZiel\\TwigLoaderFlysystem\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "CedricZiel\\TwigLoaderFlysystem\\Test\\": "tests/"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "phpunit"
-                ],
-                "format": [
-                    "phpcbf --standard=psr2 src/"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -119,16 +107,13 @@
             "description": "Flysystem loader for the twig templating language",
             "homepage": "https://github.com/cedricziel/twig-loader-flysystem",
             "keywords": [
+                "Flysystem",
                 "filesystem",
-                "flysystem",
                 "loader",
                 "templates",
                 "twig"
             ],
-            "support": {
-                "source": "https://github.com/HaaseIT/twig-loader-flysystem/tree/master"
-            },
-            "time": "2016-08-25 15:35:42"
+            "time": "2016-08-25 16:39:17"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1944,9 +1929,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "cedricziel/twig-loader-flysystem": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
