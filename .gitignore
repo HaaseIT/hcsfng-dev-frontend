@@ -13,3 +13,4 @@ repository/textcats/
 !repository/templates/readme.md
 !repository/textcats/readme.md
 app/config/repository.yml
+vendor
