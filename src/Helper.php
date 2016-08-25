@@ -100,12 +100,17 @@ class Helper
             'autoescape' => false,
             'debug' => (isset($container['conf']["debug"]) && $container['conf']["debug"] ? true : false)
         ];
-        if (isset($container['conf']["templatecache_enable"]) && $container['conf']["templatecache_enable"] &&
-            is_dir(PATH_TEMPLATECACHE) && is_writable(PATH_TEMPLATECACHE)) {
+
+        if (
+            isset($container['conf']["templatecache_enable"])
+            && $container['conf']["templatecache_enable"]
+            && is_dir(PATH_TEMPLATECACHE)
+            && is_writable(PATH_TEMPLATECACHE)
+        ) {
             $twig_options["cache"] = PATH_TEMPLATECACHE;
         }
 
-        $twig = new \Twig_Environment($loader);
+        $twig = new \Twig_Environment($loader, $twig_options);
 
         if ($container['conf']['allow_parsing_of_page_content']) {
             $twig->addExtension(new \Twig_Extension_StringLoader());
@@ -113,9 +118,6 @@ class Helper
             $twig->addFunction('template_from_string', new \Twig_Function_Function('\HaaseIT\HCSF\Helper::reachThrough'));
         }
 
-        if (isset($container['conf']["debug"]) && $container['conf']["debug"]) {
-            //$twig->addExtension(new Twig_Extension_Debug());
-        }
         $twig->addFunction(new \Twig_SimpleFunction('T', [$container['textcats'], 'T']));
 
         return $twig;
