@@ -6,4 +6,6 @@ Find the configuration files in app/config/, copy the *.dist.yml to *.yml but ke
 
 If you want to use custom directory names, you can configure these in app/config/constants.php.
 
+The cache dir must be writable for the webserver.
+
 This is meant to be fed by a backend which is still in progress of being written (hcsfng-backend).
