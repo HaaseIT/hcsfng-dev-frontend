@@ -80,7 +80,7 @@ $container['conf'] = function ($c) {
 // ----------------------------------------------------------------------------
 // Begin constants definition
 // ----------------------------------------------------------------------------
-const DIRNAME_TEMPLATECACHE = 'templates';
+const DIRNAME_TEMPLATECACHE = 'twig';
 define('DIRNAME_CACHE', $container['conf']['dirname_cache']);
 define('DIRNAME_DOCROOT', $container['conf']['dirname_docroot']);
 define('DIRNAME_LOGS', $container['conf']['dirname_logs']);

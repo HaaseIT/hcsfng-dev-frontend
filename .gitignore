@@ -9,6 +9,7 @@ repository/templates/
 repository/textcats/
 !logs/readme.md
 !cache/readme.md
+!cache/twig/readme.md
 !repository/pages/readme.md
 !repository/templates/readme.md
 !repository/textcats/readme.md
