@@ -31,7 +31,7 @@ class Helper
 
         if (count($langavailable) > 1) {
             self::$singlelangmode = false;
-            if ($container['requesturi'][0] == '/' && $container['requesturi'][3] == '/') {
+            if ($container['requesturi'][0] == '/' && $container['requesturi'][3] == '/') { // todo: fix notice
                 $substr = substr($container['requesturi'], 1, 2);
                 if (isset($langavailable[$substr])) {
                     self::$langprefixset = true;
@@ -81,8 +81,9 @@ class Helper
             if (!empty($basepath)) {
                 $adapter = new \League\Flysystem\Adapter\Local($basepath);
             }
+        } elseif ($container['conf']['repository']['type'] == 'guzzle') {
+            $adapter = new \Twistor\Flysystem\GuzzleAdapter($container['conf']['repository']['url']);
         }
-
 
         if (!empty($adapter)) {
             return new \League\Flysystem\Filesystem($adapter);
