@@ -56,10 +56,17 @@ $container['request'] = $container['request']->withRequestTarget($container['req
 
 use Symfony\Component\Yaml\Yaml;
 $container['conf'] = function ($c) {
+    // load core config
     $conf = Yaml::parse(file_get_contents(__DIR__.'/config/core.dist.yml'));
-    if (is_file(__DIR__.'/config/core.yml')) $conf = array_merge($conf, Yaml::parse(file_get_contents(__DIR__.'/config/core.yml')));
-    //$conf = array_merge($conf, Yaml::parse(file_get_contents(__DIR__.'/config/config.countries.yml')));
-    //$conf = array_merge($conf, Yaml::parse(file_get_contents(__DIR__.'/config/config.scrts.yml')));
+    if (is_file(__DIR__.'/config/core.yml')) {
+        $conf = array_merge($conf, Yaml::parse(file_get_contents(__DIR__.'/config/core.yml')));
+    }
+
+    // load repository config
+    $conf['repository'] = Yaml::parse(file_get_contents(__DIR__.'/config/repository.dist.yml'));
+    if (is_file(__DIR__.'/config/repository.yml')) {
+        $conf['repository'] = array_merge($conf['repository'], Yaml::parse(file_get_contents(__DIR__.'/config/repository.yml')));
+    }
 
     if (!empty($conf['maintenancemode']) && $conf['maintenancemode']) {
         $conf["templatecache_enable"] = false;
@@ -73,33 +80,18 @@ $container['conf'] = function ($c) {
 };
 
 // ----------------------------------------------------------------------------
+// Begin Repository filesystem loading and init
+// ----------------------------------------------------------------------------
+$container['repository'] = function ($c) {
+    return \HaaseIT\HCSFNG\Frontend\Helper::initRepository($c);
+};
+
+// ----------------------------------------------------------------------------
 // Begin Twig loading and init
 // ----------------------------------------------------------------------------
 
 $container['twig'] = function ($c) {
-    $loader = new Twig_Loader_Filesystem([__DIR__ . '/../repository/templates/']);
-    $twig_options = [
-        'autoescape' => false,
-        'debug' => (isset($c['conf']["debug"]) && $c['conf']["debug"] ? true : false)
-    ];
-    if (isset($c['conf']["templatecache_enable"]) && $c['conf']["templatecache_enable"] &&
-        is_dir(PATH_TEMPLATECACHE) && is_writable(PATH_TEMPLATECACHE)) {
-        $twig_options["cache"] = PATH_TEMPLATECACHE;
-    }
-    $twig = new Twig_Environment($loader, $twig_options);
-
-    if ($c['conf']['allow_parsing_of_page_content']) {
-        $twig->addExtension(new Twig_Extension_StringLoader());
-    } else { // make sure, template_from_string is callable
-        $twig->addFunction('template_from_string', new Twig_Function_Function('\HaaseIT\HCSF\Helper::reachThrough'));
-    }
-
-    if (isset($c['conf']["debug"]) && $c['conf']["debug"]) {
-        //$twig->addExtension(new Twig_Extension_Debug());
-    }
-    $twig->addFunction(new Twig_SimpleFunction('T', [$c['textcats'], 'T']));
-
-    return $twig;
+    return \HaaseIT\HCSFNG\Frontend\Helper::initTwig($c);
 };
 
 date_default_timezone_set($container['conf']["defaulttimezone"]);
@@ -108,6 +100,9 @@ $container['lang'] = \HaaseIT\HCSFNG\Frontend\Helper::getLanguage($container);
 $langavailable = $container['conf']["lang_available"];
 $container['defaultlang'] = key($langavailable);
 
+// ----------------------------------------------------------------------------
+// Load Textcats
+// ----------------------------------------------------------------------------
 $container['textcats'] = function ($c)
 {
     $textcats = new \HaaseIT\HCSFNG\Frontend\Textcat($c, PATH_LOGS);
